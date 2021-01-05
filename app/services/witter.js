@@ -1,6 +1,11 @@
 const axios = require('axios');
+const config = require('../../config/index');
 
-const GEEK_JOKES_URL = 'https://geek-jokes.sameerkumar.website/api?format=json';
+const {
+  common: {
+    external_services: { geek_jokes_url: GEEK_JOKES_URL }
+  }
+} = config;
 
 const WitterServices = module.exports;
 

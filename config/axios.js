@@ -1,4 +1,6 @@
 const axios = require('axios');
+const logger = require('../app/logger');
+const { getErrorMessage } = require('../app/errors');
 
 const axiosConfig = module.exports;
 
@@ -10,8 +12,9 @@ axiosConfig.initAxios = () => {
 
   const rejectResponse = error => {
     const { message, response: { status } = { status: 500 } } = error;
-    const messageError = { status, message };
+    const messageError = { status, message: getErrorMessage[status](message) };
 
+    logger.error(error);
     return Promise.reject(messageError);
   };
 
