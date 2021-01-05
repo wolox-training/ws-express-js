@@ -7,6 +7,7 @@ const routes = require('./app/routes');
 const errors = require('./app/middlewares/errors');
 const documentation = require('./documentation');
 const logger = require('./app/logger');
+const axiosConfig = require('./config/axios');
 
 const DEFAULT_BODY_SIZE_LIMIT = 1024 * 1024 * 10;
 const DEFAULT_PARAMETER_LIMIT = 10000;
@@ -22,6 +23,7 @@ const bodyParserUrlencodedConfig = () => ({
   limit: config.common.api.bodySizeLimit || DEFAULT_BODY_SIZE_LIMIT
 });
 
+axiosConfig.initAxios();
 const app = express();
 
 // Client must send "Content-Type: application/json" header
