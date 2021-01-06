@@ -1,24 +1,23 @@
+const { validationResult } = require('express-validator');
 const errors = require('../errors');
-const UsersServices = require('../services/users.js');
 const logger = require('../../app/logger/index');
+const UsersServices = require('../services/users.js');
 
-const WOLOX_EMAIL_DOMAIN = '@wolox';
 const UsersController = module.exports;
 
 UsersController.createUser = async (req, res) => {
-  const { body, body: { name, email, password, lastName } = {} } = req;
+  const { body } = req;
+  const isValidRequest = validationResult(req).array();
 
-  if (!body) throw errors.badRequestError('Not data sent');
-  if (!name) throw errors.badRequestError('Not valid name');
-  if (!lastName) throw errors.badRequestError('Not valid last name');
-  if (!password || password.length < 8) throw errors.badRequestError('Not valid password');
-  if (!email || !email.includes(WOLOX_EMAIL_DOMAIN)) throw errors.badRequestError('Not valid email');
+  if (isValidRequest.length) {
+    throw errors.badRequestError(isValidRequest[0].msg);
+  }
 
   const createdUser = await UsersServices.createUser(body);
 
-  const { name: userName } = createdUser;
+  const { name } = createdUser;
 
   logger.info('User created successfully');
 
-  res.status(201).send({ name: userName });
+  return res.status(201).send({ name });
 };
