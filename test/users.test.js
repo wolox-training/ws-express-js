@@ -71,7 +71,7 @@ describe('POST users', () => {
     } = response;
 
     expect(status).toBe(400);
-    expect(message).toBe('Validation error: Password length should be between 8 and 60');
+    expect(message).toBe('Password length should be minimum 8');
     done();
   });
 
@@ -87,7 +87,7 @@ describe('POST users', () => {
     } = response;
 
     expect(status).toBe(400);
-    expect(message).toBe('notNull Violation: Name cannot be null');
+    expect(message).toBe('Name cannot be null or empty');
     done();
   });
 });
