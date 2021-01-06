@@ -8,7 +8,8 @@ const UsersController = module.exports;
 UsersController.createUser = async (req, res) => {
   const { body, body: { email } = {} } = req;
 
-  if (!email.includes(WOLOX_EMAIL_DOMAIN)) throw errors.badRequestError('Not valid email');
+  if (!body) throw errors.badRequestError('Not data sent');
+  if (!email || !email.includes(WOLOX_EMAIL_DOMAIN)) throw errors.badRequestError('Not valid email');
 
   const createdUser = await UsersServices.createUser(body);
 
