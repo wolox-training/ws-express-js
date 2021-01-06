@@ -1,5 +1,9 @@
+/* eslint-disable func-names */
+/* eslint-disable no-unused-vars */
 /* eslint-disable require-atomic-updates */
-const bcrypt = require('bcrypt');
+
+const getToken = require('../helpers/generateToken');
+const HashUtils = require('../helpers/hashUtils');
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
@@ -49,12 +53,23 @@ module.exports = (sequelize, DataTypes) => {
         beforeCreate: async user => {
           const { password } = user;
 
-          const hashedPassword = await bcrypt.hash(password, 10);
+          const hashedPassword = await HashUtils.generateHashedPassword(password);
           user.password = hashedPassword;
         }
       }
     }
   );
+
+  User.prototype.generateToken = function() {
+    const { id, name, email } = this;
+    return getToken({ id, name, email });
+  };
+
+  User.prototype.getPublicData = function() {
+    const userData = this.toJSON();
+    const { password: _, ...cleanedUser } = userData;
+    return cleanedUser;
+  };
 
   return User;
 };
