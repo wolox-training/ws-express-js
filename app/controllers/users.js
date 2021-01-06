@@ -21,3 +21,21 @@ UsersController.createUser = async (req, res) => {
 
   return res.status(201).send({ name });
 };
+
+UsersController.signIn = async (req, res) => {
+  const isValidRequest = validationResult(req).array();
+
+  if (isValidRequest.length) {
+    throw errors.badRequestError(isValidRequest[0].msg);
+  }
+
+  const {
+    body: { email, password }
+  } = req;
+
+  const signedUser = await UsersServices.signIn(email, password);
+
+  logger.info('User signed successfully');
+
+  return res.status(200).send(signedUser);
+};
