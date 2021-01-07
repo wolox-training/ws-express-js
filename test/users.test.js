@@ -1,9 +1,11 @@
 const request = require('supertest');
+
+const getToken = require('../app/helpers/generateToken');
 const truncateDatabase = require('./setup');
+const errors = require('../app/errors');
 const app = require('../app');
 
 beforeAll(async () => {
-  process.env.NODE_ENV = 'test';
   await truncateDatabase();
 });
 
@@ -184,6 +186,91 @@ describe('POST users/sessions', () => {
 
     expect(status).toBe(400);
     expect(message).toBe('You may only use email addresses from wolox');
+    done();
+  });
+});
+
+describe('GET users', () => {
+  test('Should work correctly', async done => {
+    const { name, email } = newUserData;
+
+    const token = getToken({ name, email });
+
+    const response = await request(app)
+      .get('/users')
+      .set('Accept', 'application/json')
+      .set('authorization', `Bearer ${token}`)
+      .query({ page: 1, size: 10 });
+
+    const { status } = response;
+
+    expect(status).toBe(200);
+    done();
+  });
+
+  test('Should not work correctly when query params are not sent', async done => {
+    const { name, email } = newUserData;
+
+    const token = getToken({ name, email });
+
+    const response = await request(app)
+      .get('/users')
+      .set('Accept', 'application/json')
+      .set('authorization', `Bearer ${token}`)
+      .query({});
+
+    const {
+      status,
+      body: { internal_code: internalCode }
+    } = response;
+
+    expect(status).toBe(400);
+    expect(internalCode).toBe(errors.BAD_REQUEST_ERROR);
+    done();
+  });
+
+  test('Should not work correctly when query params are not numbers', async done => {
+    const { name, email } = newUserData;
+
+    const token = getToken({ name, email });
+    const notNumber = 'definablyNotANumber';
+
+    const response = await request(app)
+      .get('/users')
+      .set('Accept', 'application/json')
+      .set('authorization', `Bearer ${token}`)
+      .query({ page: notNumber, size: notNumber });
+
+    const {
+      status,
+      body: { message, internal_code: internalCode }
+    } = response;
+
+    expect(status).toBe(400);
+    expect(message).toBe('Should be a number greater than 0');
+    expect(internalCode).toBe(errors.BAD_REQUEST_ERROR);
+    done();
+  });
+
+  test('Should send database_error when database error occurs', async done => {
+    const { name, email } = newUserData;
+
+    const token = getToken({ name, email });
+    const tooBigNumber = 99999999999999999;
+
+    const response = await request(app)
+      .get('/users')
+      .set('Accept', 'application/json')
+      .set('authorization', `Bearer ${token}`)
+      .query({ page: tooBigNumber, size: tooBigNumber });
+
+    const {
+      status,
+      body: { internal_code: internalCode }
+    } = response;
+
+    expect(status).toBe(503);
+    expect(internalCode).toBe(errors.DATABASE_ERROR);
     done();
   });
 });

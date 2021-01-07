@@ -16,6 +16,18 @@ const passwordDefaultValidation = {
   }
 };
 
+const integerDefaultValidation = {
+  isInt: {
+    errorMessage: 'Should be a number greater than 0',
+    options: [
+      {
+        min: 1
+      }
+    ]
+  },
+  toInt: true
+};
+
 const UsersSchemas = module.exports;
 
 UsersSchemas.post = {
@@ -42,6 +54,23 @@ UsersSchemas.post = {
     optional: false,
     ...passwordDefaultValidation,
     errorMessage: 'Password should not be null or empty'
+  }
+};
+
+UsersSchemas.get = {
+  page: {
+    in: ['query'],
+    notEmpty: true,
+    optional: false,
+    ...integerDefaultValidation,
+    errorMessage: 'Page should not be null or empty'
+  },
+  size: {
+    in: ['query'],
+    notEmpty: true,
+    optional: false,
+    ...integerDefaultValidation,
+    errorMessage: 'size should not be null or empty'
   }
 };
 
