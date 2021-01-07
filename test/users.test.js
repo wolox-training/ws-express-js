@@ -1,7 +1,7 @@
 const request = require('supertest');
 
 const getToken = require('../app/helpers/generateToken');
-const truncateDatabase = require('./setup');
+const { truncateDatabase } = require('./setup');
 const errors = require('../app/errors');
 const app = require('../app');
 
