@@ -63,6 +63,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+  User.associate = models => {
+    User.hasMany(models.weet, { foreignKey: 'userId', as: 'weets' });
+  };
+
   User.prototype.generateToken = function() {
     const { id, name, email } = this;
     return getToken({ id, name, email });
