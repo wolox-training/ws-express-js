@@ -9,7 +9,7 @@ const WeetsServices = module.exports;
 
 const {
   common: {
-    external_services: { geek_jokes_url: GEEK_JOKES_URL }
+    externalServices: { geekJokesUrl: GEEK_JOKES_URL }
   }
 } = config;
 
