@@ -1,93 +1,133 @@
 const request = require('supertest');
+const DataTest = require('./data/users');
+const handleAsyncError = require('./testUtils');
 const truncateDatabase = require('./setup');
 const app = require('../app');
 
+const { newUserData } = DataTest;
+
 beforeAll(async () => {
-  process.env.NODE_ENV = 'test';
   await truncateDatabase();
 });
 
-describe('POST users', () => {
-  const newUserData = {
-    name: 'William',
-    lastName: 'Salazar',
-    email: 'william.salazar@wolox.co',
-    password: 'thisIsAVerySecurePassword'
-  };
+describe('POST /users - Signup', () => {
+  test(
+    'Should signup a new valid user',
+    handleAsyncError(async () => {
+      const response = await request(app)
+        .post('/users')
+        .set('Accept', 'application/json')
+        .send(newUserData);
 
-  test('create new user', async done => {
-    const response = await request(app)
-      .post('/users')
-      .set('Accept', 'application/json')
-      .send(newUserData);
+      const {
+        body: { name }
+      } = response;
 
-    const {
-      status,
-      body: { name }
-    } = response;
+      expect(name).toBe(newUserData.name);
+    })
+  );
 
-    expect(status).toBe(201);
-    expect(name).toBe('William');
-    done();
-  });
+  test(
+    'Should return an error when email is already in use and return status 400',
+    handleAsyncError(async () => {
+      const response = await request(app)
+        .post('/users')
+        .set('Accept', 'application/json')
+        .send(newUserData);
 
-  test('Should return an error when email is already in use', async done => {
-    const response = await request(app)
-      .post('/users')
-      .set('Accept', 'application/json')
-      .send(newUserData);
+      const { status } = response;
 
-    const {
-      status,
-      body: { message }
-    } = response;
+      expect(status).toBe(400);
+    })
+  );
 
-    expect(status).toBe(400);
-    expect(message).toBe('Email address already in use!');
-    done();
-  });
+  test(
+    'Should return an error when email is already in use returning a valid message',
+    handleAsyncError(async () => {
+      const response = await request(app)
+        .post('/users')
+        .set('Accept', 'application/json')
+        .send(newUserData);
 
-  test('Should return an error when email is not valid', async done => {
-    const response = await request(app)
-      .post('/users')
-      .set('Accept', 'application/json')
-      .send({ ...newUserData, email: 'william@gmail.com' });
+      const {
+        body: { message }
+      } = response;
 
-    const { status } = response;
+      expect(message).toBe(DataTest.EmailAlreadyInUseMessage);
+    })
+  );
 
-    expect(status).toBe(400);
-    done();
-  });
+  test(
+    'Should return an error when email is not valid',
+    handleAsyncError(async () => {
+      const response = await request(app)
+        .post('/users')
+        .set('Accept', 'application/json')
+        .send({ ...newUserData, email: DataTest.NotValidEmail });
 
-  test('Should return an error when password is not valid', async done => {
-    const response = await request(app)
-      .post('/users')
-      .set('Accept', 'application/json')
-      .send({ ...newUserData, password: 'min8' });
+      const { status } = response;
 
-    const {
-      status,
-      body: { message }
-    } = response;
+      expect(status).toBe(400);
+    })
+  );
 
-    expect(status).toBe(400);
-    expect(message).toBe('Not valid password');
-    done();
-  });
+  test(
+    'Should return an error when password is not valid and return status 400',
+    handleAsyncError(async () => {
+      const response = await request(app)
+        .post('/users')
+        .set('Accept', 'application/json')
+        .send({ ...newUserData, password: 'min8' });
 
-  test('Should return an error is any required value is missing', async done => {
-    const response = await request(app)
-      .post('/users')
-      .set('Accept', 'application/json')
-      .send({ email: 'william.salazar@wolox.co' });
+      const { status } = response;
 
-    const {
-      status,
-      body: { message }
-    } = response;
+      expect(status).toBe(400);
+    })
+  );
 
-    expect(status).toBe(400);
-    expect(message).toBe('Not valid name');
-    done();
-  });
+  test(
+    'Should return an error when password is not valid returning a valid message',
+    handleAsyncError(async () => {
+      const response = await request(app)
+        .post('/users')
+        .set('Accept', 'application/json')
+        .send({ ...newUserData, password: 'min8' });
+
+      const {
+        body: { message }
+      } = response;
+
+      expect(message).toBe(DataTest.NotValidPasswordMessage);
+    })
+  );
+
+  test(
+    'Should return error with status 400 when any required value is missing',
+    handleAsyncError(async () => {
+      const response = await request(app)
+        .post('/users')
+        .set('Accept', 'application/json')
+        .send({ email: 'william.salazar@wolox.co' });
+
+      const { status } = response;
+
+      expect(status).toBe(400);
+    })
+  );
+
+  test(
+    'Should return an valid error message when any required value is missing',
+    handleAsyncError(async () => {
+      const response = await request(app)
+        .post('/users')
+        .set('Accept', 'application/json')
+        .send({ email: 'william.salazar@wolox.co' });
+
+      const {
+        body: { message }
+      } = response;
+
+      expect(message).toBe(DataTest.NotValidNameMessage);
+    })
+  );
 });
