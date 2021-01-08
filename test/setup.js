@@ -9,4 +9,7 @@ Setup.truncateTable = model =>
 
 Setup.truncateDatabase = () => Promise.all(tables.map(Setup.truncateTable));
 
-Setup.createUsers = usersData => models.user.bulkCreate(usersData);
+Setup.createUsers = usersData =>
+  models.user.bulkCreate(usersData, {
+    individualHooks: true
+  });
