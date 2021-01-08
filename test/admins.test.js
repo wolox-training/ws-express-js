@@ -3,24 +3,20 @@ const request = require('supertest');
 const getToken = require('../app/helpers/generateToken');
 const { truncateDatabase, createUsers } = require('./setup');
 const initUsersData = require('./data/initUsersData');
+const DataTest = require('./data/admins');
 const errors = require('../app/errors');
 const app = require('../app');
 
 const BASE_URL = '/admin';
+
+const { newAdminData } = DataTest;
 
 beforeAll(async () => {
   await truncateDatabase();
   await createUsers(initUsersData);
 });
 
-const newAdminData = {
-  name: 'newAdmin',
-  lastName: 'lastName',
-  email: 'newAdmin@wolox.co',
-  password: 'thisIsAVerySecurePassword'
-};
-
-describe('POST admin/users', () => {
+describe('POST admin/users - Create or update user to admin', () => {
   const adminUserData = initUsersData[0];
   const { email: adminEmail, name: adminName } = adminUserData;
   const adminToken = getToken({ email: adminEmail, name: adminName });
