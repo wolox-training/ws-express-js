@@ -1,12 +1,12 @@
 const request = require('supertest');
 
 const axios = require('axios');
-const getToken = require('../app/helpers/generateToken');
-const { truncateDatabase, createUsers } = require('./setup');
-const initUsersData = require('./data/initUsersData');
-const DataTest = require('./data/weets');
-const handleAsyncError = require('./testUtils');
-const app = require('../app');
+const getToken = require('../../app/helpers/generateToken');
+const { truncateDatabase, createUsers } = require('../setup');
+const initUsersData = require('../data/initUsersData');
+const DataTest = require('../data/weets');
+const handleAsyncError = require('../testUtils');
+const app = require('../../app');
 
 jest.mock('axios');
 
