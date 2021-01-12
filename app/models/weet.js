@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Weet.associate = models => {
     Weet.belongsTo(models.user, { foreignKey: 'userId' });
+    Weet.hasMany(models.rating, { foreignKey: 'weetId' });
   };
 
   return Weet;
