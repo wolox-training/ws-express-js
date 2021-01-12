@@ -1,7 +1,8 @@
 const axios = require('axios');
 
-const { weet: WeetModel } = require('../models/index');
+const { weet: WeetModel, rating: RatingModel, sequelize } = require('../models/index');
 const config = require('../../config/index');
+const { badRequestError, notFoundError } = require('../errors');
 
 const MAX_LENGTH_WEET = 140;
 
@@ -38,4 +39,39 @@ WeetsServices.getUserWeets = (user, queryPagingData) => {
     limit: page,
     offset
   });
+};
+
+WeetsServices.rateWeet = async (ratingUserId, weetId, rate) => {
+  const transaction = await sequelize.transaction();
+  const ratingData = {
+    ratingUserId,
+    weetId,
+    score: rate
+  };
+
+  try {
+    const isAlreadyRated = await RatingModel.findOne({ where: ratingData });
+
+    if (isAlreadyRated) throw badRequestError('Weet already rated');
+
+    const isExistingWeet = await WeetModel.findOne({ where: { id: weetId } });
+
+    if (!isExistingWeet) throw notFoundError('Weet do not exist');
+
+    const createdRating = await RatingModel.create(
+      {
+        ratingUserId,
+        weetId,
+        score: rate
+      },
+      { transaction }
+    );
+
+    await transaction.commit();
+
+    return createdRating;
+  } catch (err) {
+    if (transaction.rollback) await transaction.rollback();
+    throw err;
+  }
 };
