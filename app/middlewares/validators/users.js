@@ -3,11 +3,11 @@ const { users: errorMessages } = require('../../constants/errorMessages');
 const emailDefaultValidation = {
   isEmail: {
     bail: true,
-    errorMessage: 'Should be an email'
+    errorMessage: errorMessages.ShouldBeAnEmailMessage
   },
   matches: {
     options: /(\w|-|\.)+@(wolox)\.(\w|\.){2,15}$/i,
-    errorMessage: 'You may only use email addresses from wolox'
+    errorMessage: errorMessages.OnlyWoloxEmail
   }
 };
 
@@ -20,7 +20,7 @@ const passwordDefaultValidation = {
 
 const integerDefaultValidation = {
   isInt: {
-    errorMessage: 'Should be a number greater than 0',
+    errorMessage: errorMessages.ShouldBeANumberGreaterThanZero,
     options: [
       {
         min: 1
@@ -65,14 +65,14 @@ UsersSchemas.get = {
     notEmpty: true,
     optional: false,
     ...integerDefaultValidation,
-    errorMessage: 'Page should not be null or empty'
+    errorMessage: errorMessages.NotValidPageParamMessage
   },
   size: {
     in: ['query'],
     notEmpty: true,
     optional: false,
     ...integerDefaultValidation,
-    errorMessage: 'size should not be null or empty'
+    errorMessage: errorMessages.NotValidSizeParamMessage
   }
 };
 
@@ -82,7 +82,7 @@ UsersSchemas.postSessions = {
     notEmpty: true,
     optional: false,
     ...emailDefaultValidation,
-    errorMessage: 'Email should not be null or empty'
+    errorMessage: errorMessages.NotValidEmailMessage
   },
   password: {
     in: ['body'],

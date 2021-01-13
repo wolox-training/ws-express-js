@@ -9,6 +9,7 @@ const {
     session: { header_name: HEADER_NAME, secret: SECRET_KEY }
   }
 } = require('../../config/index');
+const { users: errorMessages } = require('../constants/errorMessages');
 
 const BEARER = 'Bearer ';
 
@@ -21,9 +22,7 @@ const verifyToken = async token => {
 
   const user = await UserModel.findOne({ where: payload });
 
-  if (!user) {
-    throw notFoundError('User not found');
-  }
+  if (!user) throw notFoundError(errorMessages.UserNotFoundMessage);
 
   return { ...user.getPublicData(), token: filteredToken };
 };
@@ -32,7 +31,7 @@ module.exports = async (req, res, next) => {
   try {
     const token = req.header(HEADER_NAME);
 
-    if (!token) throw unauthorizedError('Unauthorized');
+    if (!token) throw unauthorizedError(errorMessages.UserUnauthorizedMessage);
 
     const user = await verifyToken(token);
 

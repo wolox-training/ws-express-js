@@ -205,7 +205,7 @@ describe('POST users/sessions', () => {
     } = response;
 
     expect(status).toBe(404);
-    expect(message).toBe(DataTest.NotFoundUserMessage);
+    expect(message).toBe(DataTest.UserNotFoundMessage);
     done();
   });
 

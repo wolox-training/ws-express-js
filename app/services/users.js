@@ -10,7 +10,7 @@ UsersServices.createUser = userData => UserModel.create(userData);
 UsersServices.signIn = async (email, password) => {
   const user = await UserModel.findOne({ where: { email } });
 
-  if (!user) throw notFoundError(errorMessages.NotFoundUserMessage);
+  if (!user) throw notFoundError(errorMessages.UserNotFoundMessage);
 
   const { password: hashedPassword } = user;
 

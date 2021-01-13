@@ -46,7 +46,7 @@ describe('POST users/sessions - SignIn', () => {
       } = response;
 
       expect(status).toBe(400);
-      expect(message).toBe(DataTest.PasswordShouldNotBeNullMessage);
+      expect(message).toBe(DataTest.NotValidPasswordMessage);
     })
   );
 
@@ -106,7 +106,7 @@ describe('POST users/sessions - SignIn', () => {
       } = response;
 
       expect(status).toBe(400);
-      expect(message).toBe(DataTest.OnlyWoloxEmailMessage);
+      expect(message).toBe(DataTest.OnlyWoloxEmail);
     })
   );
 });
