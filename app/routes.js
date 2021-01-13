@@ -26,6 +26,11 @@ exports.init = app => {
   );
   app.post('/users/sessions', checkSchema(userSessionsPostSchema), requestHandler(UsersController.signIn));
   app.post(
+    '/users/sessions/invalidate_all',
+    AuthenticationMiddleware,
+    requestHandler(UsersController.invalidateAllSessions)
+  );
+  app.post(
     '/admin/users',
     AuthenticationMiddleware,
     checkSchema(adminUsersPostSchema),

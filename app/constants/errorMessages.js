@@ -12,7 +12,8 @@ module.exports = {
     ShouldBeANumberGreaterThanZero: 'Should be a number greater than 0',
     NotValidPageParamMessage: 'Page should not be null or empty',
     NotValidSizeParamMessage: 'size should not be null or empty',
-    UserUnauthorizedMessage: 'Unauthorized'
+    UserUnauthorizedMessage: 'Unauthorized',
+    DisabledTokenMessage: 'Unauthorized - Disabled token'
   },
   admins: {
     OnlyForAdminsMessage: 'Only for admins'

@@ -15,3 +15,5 @@ Setup.createUsers = usersData =>
   });
 
 Setup.createWeets = weetsData => models.weet.bulkCreate(weetsData);
+
+Setup.createBlacklistedTokens = tokensData => models.blacklist.bulkCreate(tokensData);
