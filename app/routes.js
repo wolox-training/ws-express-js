@@ -5,10 +5,12 @@ const {
   postSessions: userSessionsPostSchema,
   get: userGetSchema
 } = require('./middlewares/validators/users');
+const { postUsers: adminUsersPostSchema } = require('./middlewares/validators/admins');
 const AuthenticationMiddleware = require('./middlewares/authentication');
 
 const WitterController = require('./controllers/witter');
 const UsersController = require('./controllers/users');
+const AdminsController = require('./controllers/admins');
 const { healthCheck } = require('./controllers/healthCheck');
 
 exports.init = app => {
@@ -22,4 +24,10 @@ exports.init = app => {
     requestHandler(UsersController.getUsersList)
   );
   app.post('/users/sessions', checkSchema(userSessionsPostSchema), requestHandler(UsersController.signIn));
+  app.post(
+    '/admin/users',
+    AuthenticationMiddleware,
+    checkSchema(adminUsersPostSchema),
+    requestHandler(AdminsController.createAdmin)
+  );
 };

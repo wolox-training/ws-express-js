@@ -13,5 +13,8 @@ module.exports = {
     NotValidPageParamMessage: 'Page should not be null or empty',
     NotValidSizeParamMessage: 'size should not be null or empty',
     UserUnauthorizedMessage: 'Unauthorized'
+  },
+  admins: {
+    OnlyForAdminsMessage: 'Only for admins'
   }
 };
