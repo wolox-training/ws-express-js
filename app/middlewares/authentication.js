@@ -24,7 +24,7 @@ const verifyToken = async token => {
 
   if (!user) throw notFoundError(errorMessages.UserNotFoundMessage);
 
-  return { ...user.getPublicData(), token: filteredToken };
+  return user;
 };
 
 module.exports = async (req, res, next) => {
@@ -35,7 +35,6 @@ module.exports = async (req, res, next) => {
 
     const user = await verifyToken(token);
 
-    req.token = user.token;
     req.user = user;
     next();
   } catch (error) {
