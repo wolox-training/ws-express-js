@@ -4,6 +4,7 @@ UsersSchemas.post = {
   name: {
     in: ['body'],
     notEmpty: true,
+    optional: false,
     errorMessage: 'Name cannot be null or empty'
   },
   last_name: {
@@ -21,11 +22,13 @@ UsersSchemas.post = {
       errorMessage: 'You may only use email addresses from wolox'
     },
     notEmpty: true,
+    optional: false,
     errorMessage: 'Email should not be null or empty'
   },
   password: {
     in: ['body'],
     notEmpty: true,
+    optional: false,
     isLength: {
       errorMessage: 'Password length should be minimum 8',
       options: { min: 8 }
