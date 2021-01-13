@@ -6,6 +6,8 @@ module.exports = {
     PasswordMinLengthMessage: 'Password length should be minimum 8',
     EmailAlreadyInUseMessage: 'Email address already in use!',
     ShouldBeAnEmailMessage: 'Should be an email',
-    OnlyWoloxEmail: 'You may only use email addresses from wolox'
+    OnlyWoloxEmail: 'You may only use email addresses from wolox',
+    NotFoundUserMessage: 'User not found',
+    IncorrectPasswordMessage: 'Incorrect password'
   }
 };

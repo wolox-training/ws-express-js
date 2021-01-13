@@ -166,7 +166,7 @@ describe('POST users/sessions', () => {
     } = response;
 
     expect(status).toBe(400);
-    expect(message).toBe('Password should not be null or empty');
+    expect(message).toBe(DataTest.NotValidPasswordMessage);
     done();
   });
 
@@ -185,7 +185,7 @@ describe('POST users/sessions', () => {
     } = response;
 
     expect(status).toBe(401);
-    expect(message).toBe('Incorrect password');
+    expect(message).toBe(DataTest.IncorrectPasswordMessage);
     done();
   });
 
@@ -204,7 +204,7 @@ describe('POST users/sessions', () => {
     } = response;
 
     expect(status).toBe(404);
-    expect(message).toBe('User not found');
+    expect(message).toBe(DataTest.NotFoundUserMessage);
     done();
   });
 
@@ -223,7 +223,7 @@ describe('POST users/sessions', () => {
     } = response;
 
     expect(status).toBe(400);
-    expect(message).toBe('You may only use email addresses from wolox');
+    expect(message).toBe(DataTest.OnlyWoloxEmail);
     done();
   });
 });
