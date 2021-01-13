@@ -1,5 +1,23 @@
 const { users: errorMessages } = require('../../constants/errorMessages');
 
+const emailDefaultValidation = {
+  isEmail: {
+    bail: true,
+    errorMessage: 'Should be an email'
+  },
+  matches: {
+    options: /(\w|-|\.)+@(wolox)\.(\w|\.){2,15}$/i,
+    errorMessage: 'You may only use email addresses from wolox'
+  }
+};
+
+const passwordDefaultValidation = {
+  isLength: {
+    errorMessage: errorMessages.PasswordMinLengthMessage,
+    options: { min: 8 }
+  }
+};
+
 const UsersSchemas = module.exports;
 
 UsersSchemas.post = {
@@ -15,26 +33,33 @@ UsersSchemas.post = {
   },
   email: {
     in: ['body'],
-    isEmail: {
-      bail: true,
-      errorMessage: errorMessages.ShouldBeAnEmailMessage
-    },
-    matches: {
-      options: /(\w|-|\.)+@(wolox)\.(\w|\.){2,15}$/i,
-      errorMessage: errorMessages.OnlyWoloxEmail
-    },
+    ...emailDefaultValidation,
     notEmpty: true,
     optional: false,
-    errorMessage: errorMessages.NotValidEmailMessage
+    errorMessage: errorMessages.ShouldBeAnEmailMessage
   },
   password: {
     in: ['body'],
     notEmpty: true,
     optional: false,
-    isLength: {
-      errorMessage: errorMessages.PasswordMinLengthMessage,
-      options: { min: 8 }
-    },
+    ...passwordDefaultValidation,
+    errorMessage: errorMessages.NotValidEmailMessage
+  }
+};
+
+UsersSchemas.postSessions = {
+  email: {
+    in: ['body'],
+    notEmpty: true,
+    optional: false,
+    ...emailDefaultValidation,
+    errorMessage: 'Email should not be null or empty'
+  },
+  password: {
+    in: ['body'],
+    notEmpty: true,
+    optional: false,
+    ...passwordDefaultValidation,
     errorMessage: errorMessages.NotValidPasswordMessage
   }
 };
