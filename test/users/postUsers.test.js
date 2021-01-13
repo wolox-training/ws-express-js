@@ -1,8 +1,9 @@
 const request = require('supertest');
-const DataTest = require('./data/users');
-const handleAsyncError = require('./testUtils');
-const truncateDatabase = require('./setup');
-const app = require('../app');
+
+const DataTest = require('../data/users');
+const handleAsyncError = require('../testUtils');
+const { truncateDatabase } = require('../setup');
+const app = require('../../app');
 
 const { newUserData } = DataTest;
 

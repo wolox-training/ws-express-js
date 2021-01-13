@@ -22,3 +22,11 @@ UsersServices.signIn = async (email, password) => {
 
   return { ...user.getPublicData(), token };
 };
+
+UsersServices.getUsersList = async (page, size) => {
+  const offset = (page - 1) * size;
+
+  const paginatedUsers = await UserModel.findAll({ limit: size, offset }).map(user => user.getPublicData());
+
+  return { users: paginatedUsers };
+};
