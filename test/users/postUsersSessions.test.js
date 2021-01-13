@@ -3,7 +3,7 @@ const request = require('supertest');
 const DataTest = require('../data/users');
 const handleAsyncError = require('../testUtils');
 const { truncateDatabase, createUsers } = require('../setup');
-const initUsersData = require('../data/InitUsersData');
+const initUsersData = require('../data/initUsersData');
 const app = require('../../app');
 
 beforeAll(async () => {
