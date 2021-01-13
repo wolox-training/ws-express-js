@@ -5,6 +5,17 @@
 const getToken = require('../helpers/generateToken');
 const HashUtils = require('../helpers/hashUtils');
 
+const getPositionByScore = score => {
+  let position = 'Developer';
+  if (score > 5 && score <= 9) position = 'Lead';
+  else if (score > 10 && score <= 19) position = 'TL';
+  else if (score > 20 && score <= 29) position = 'EM';
+  else if (score > 30 && score <= 49) position = 'HEAD';
+  else if (score > 50) position = 'CEO';
+
+  return position;
+};
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'user',
@@ -65,6 +76,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = models => {
     User.hasMany(models.weet, { foreignKey: 'userId', as: 'weets' });
+    User.belongsToMany(models.rating, { through: 'weet', foreignKey: 'userId', as: 'ratings' });
   };
 
   User.prototype.generateToken = function() {
@@ -76,6 +88,12 @@ module.exports = (sequelize, DataTypes) => {
     const userData = this.toJSON();
     const { password: _, ...cleanedUser } = userData;
     return cleanedUser;
+  };
+
+  User.prototype.getPosition = async function() {
+    const ratings = await this.getRatings();
+    const totalScore = ratings.reduce((accumulator, { score }) => accumulator + score, 0);
+    return getPositionByScore(totalScore);
   };
 
   return User;
