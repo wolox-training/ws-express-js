@@ -20,3 +20,22 @@ WeetsServices.createWeet = async userId => {
 
   return WeetModel.create({ userId, content });
 };
+
+WeetsServices.getWeets = async queryPagingData => {
+  const { page, size } = queryPagingData;
+  const offset = (page - 1) * size;
+
+  const listTweets = await WeetModel.findAll({ limit: size, offset });
+
+  return { weets: [...listTweets] };
+};
+
+WeetsServices.getUserWeets = (user, queryPagingData) => {
+  const { page, size } = queryPagingData;
+  const offset = (page - 1) * size;
+
+  return user.getWeets({
+    limit: page,
+    offset
+  });
+};

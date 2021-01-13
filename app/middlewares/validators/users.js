@@ -1,7 +1,7 @@
 const {
   emailDefaultValidation,
   passwordDefaultValidation,
-  integerDefaultValidation
+  defaultSchemaPagination
 } = require('./defaultValidations');
 
 const UsersSchemas = module.exports;
@@ -34,20 +34,7 @@ UsersSchemas.post = {
 };
 
 UsersSchemas.get = {
-  page: {
-    in: ['query'],
-    notEmpty: true,
-    optional: false,
-    ...integerDefaultValidation,
-    errorMessage: 'Page should not be null or empty'
-  },
-  size: {
-    in: ['query'],
-    notEmpty: true,
-    optional: false,
-    ...integerDefaultValidation,
-    errorMessage: 'size should not be null or empty'
-  }
+  ...defaultSchemaPagination
 };
 
 UsersSchemas.postSessions = {
