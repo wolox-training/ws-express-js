@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable require-atomic-updates */
 
+const { models: errorMessages } = require('../constants/errorMessages');
 const getToken = require('../helpers/generateToken');
 const HashUtils = require('../helpers/hashUtils');
 
@@ -15,11 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: {
             args: true,
-            msg: 'Name cannot be null'
+            msg: errorMessages.NotValidName
           },
           notEmpty: {
             args: true,
-            msg: 'Name cannot be empty'
+            msg: errorMessages.CannotBeEmpty
           }
         }
       },
@@ -31,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         unique: {
           args: true,
-          msg: 'Email address already in use!'
+          msg: errorMessages.EmailAlreadyInUseMessage
         }
       },
       password: {
@@ -39,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: {
             args: [8, 60],
-            msg: 'Password length should be between 8 and 60'
+            msg: errorMessages.PasswordMinMaxLengthMessage
           }
         }
       },
