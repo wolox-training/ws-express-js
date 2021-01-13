@@ -31,3 +31,20 @@ DefaultValidations.integerDefaultValidation = {
   },
   toInt: true
 };
+
+DefaultValidations.defaultSchemaPagination = {
+  page: {
+    in: ['query'],
+    notEmpty: true,
+    optional: false,
+    ...DefaultValidations.integerDefaultValidation,
+    errorMessage: errorMessages.NotValidPageParamMessage
+  },
+  size: {
+    in: ['query'],
+    notEmpty: true,
+    optional: false,
+    ...DefaultValidations.integerDefaultValidation,
+    errorMessage: errorMessages.NotValidSizeParamMessage
+  }
+};

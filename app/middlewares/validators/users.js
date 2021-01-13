@@ -1,7 +1,7 @@
 const {
   emailDefaultValidation,
   passwordDefaultValidation,
-  integerDefaultValidation
+  defaultSchemaPagination
 } = require('./defaultValidations');
 const { users: errorMessages } = require('../../constants/errorMessages');
 
@@ -35,20 +35,7 @@ UsersSchemas.post = {
 };
 
 UsersSchemas.get = {
-  page: {
-    in: ['query'],
-    notEmpty: true,
-    optional: false,
-    ...integerDefaultValidation,
-    errorMessage: errorMessages.NotValidPageParamMessage
-  },
-  size: {
-    in: ['query'],
-    notEmpty: true,
-    optional: false,
-    ...integerDefaultValidation,
-    errorMessage: errorMessages.NotValidSizeParamMessage
-  }
+  ...defaultSchemaPagination
 };
 
 UsersSchemas.postSessions = {
