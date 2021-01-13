@@ -1,4 +1,4 @@
-const { ValidationError } = require('sequelize');
+const { ValidationError, DatabaseError } = require('sequelize');
 const errors = require('../errors');
 const logger = require('../logger');
 
@@ -10,6 +10,9 @@ exports.handle = (error, req, res, next) => {
   else if (error instanceof ValidationError) {
     res.status(VALIDATION_ERROR_STATUS_CODE);
     error.internalCode = errors.BAD_REQUEST_ERROR;
+  } else if (error instanceof DatabaseError) {
+    res.status(errors.statusCodes[errors.DATABASE_ERROR]);
+    error.internalCode = errors.DATABASE_ERROR;
   } else {
     // Unrecognized error, notifying it to rollbar.
     res.status(DEFAULT_STATUS_CODE);

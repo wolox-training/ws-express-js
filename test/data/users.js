@@ -1,3 +1,5 @@
+const { users: errorMessages } = require('../../app/constants/errorMessages');
+
 module.exports = {
   newUserData: {
     name: 'William',
@@ -5,8 +7,6 @@ module.exports = {
     email: 'william.salazar@wolox.co',
     password: 'thisIsAVerySecurePassword'
   },
-  NotValidNameMessage: 'Not valid name',
-  NotValidPasswordMessage: 'Not valid password',
-  EmailAlreadyInUseMessage: 'Email address already in use!',
-  NotValidEmail: 'william@gmail.com'
+  NotValidEmail: 'william@gmail.com',
+  ...errorMessages
 };
