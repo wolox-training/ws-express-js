@@ -8,6 +8,7 @@ const UsersController = module.exports;
 UsersController.createUser = async (req, res) => {
   const { body, body: { name, email, password, lastName } = {} } = req;
 
+  if (!body) throw errors.badRequestError('Not data sent');
   if (!name) throw errors.badRequestError('Not valid name');
   if (!lastName) throw errors.badRequestError('Not valid last name');
   if (!password || password.length < 8) throw errors.badRequestError('Not valid password');
