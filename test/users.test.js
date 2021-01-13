@@ -97,7 +97,7 @@ describe('POST /users - Signup', () => {
         body: { message }
       } = response;
 
-      expect(message).toBe(DataTest.NotValidPasswordMessage);
+      expect(message).toBe(DataTest.PasswordMinLengthMessage);
     })
   );
 
