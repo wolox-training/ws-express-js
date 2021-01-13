@@ -35,3 +35,21 @@ WeetsController.getUserWeets = async (req, res) => {
 
   res.status(200).send(weets);
 };
+
+WeetsController.rateWeet = async (req, res) => {
+  const isValidRequest = validationResult(req).array();
+
+  if (isValidRequest.length) {
+    throw errors.badRequestError(isValidRequest[0].msg);
+  }
+
+  const {
+    params: { id: weetId },
+    user: { id: userId },
+    body: { rate }
+  } = req;
+
+  const createdRating = await WeetsServices.rateWeet(userId, weetId, rate);
+
+  res.status(201).send(createdRating);
+};
