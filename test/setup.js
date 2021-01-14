@@ -13,3 +13,5 @@ Setup.createUsers = usersData =>
   models.user.bulkCreate(usersData, {
     individualHooks: true
   });
+
+Setup.createWeets = weetsData => models.weet.bulkCreate(weetsData);
