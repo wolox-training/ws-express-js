@@ -7,7 +7,7 @@ const emailDefaultValidation = {
   },
   matches: {
     options: /(\w|-|\.)+@(wolox)\.(\w|\.){2,15}$/i,
-    errorMessage: 'You may only use email addresses from wolox'
+    errorMessage: errorMessages.OnlyWoloxEmail
   }
 };
 
@@ -53,7 +53,7 @@ UsersSchemas.postSessions = {
     notEmpty: true,
     optional: false,
     ...emailDefaultValidation,
-    errorMessage: 'Email should not be null or empty'
+    errorMessage: errorMessages.NotValidEmailMessage
   },
   password: {
     in: ['body'],
