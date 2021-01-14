@@ -1,6 +1,9 @@
 const { checkSchema } = require('express-validator');
 const { requestHandler } = require('./helpers/requestHandler');
-const { post: userPostSchema } = require('./middlewares/validators/users');
+const {
+  post: userPostSchema,
+  postSessions: userSessionsPostSchema
+} = require('./middlewares/validators/users');
 
 const WitterController = require('./controllers/witter');
 const UsersController = require('./controllers/users');
@@ -10,6 +13,5 @@ exports.init = app => {
   app.get('/health', healthCheck);
   app.get('/witter', requestHandler(WitterController.getWitter));
   app.post('/users', checkSchema(userPostSchema), requestHandler(UsersController.createUser));
-  // app.put('/endpoint/put/path', [], controller.methodPUT);
-  // app.post('/endpoint/post/path', [], controller.methodPOST);
+  app.post('/users/sessions', checkSchema(userSessionsPostSchema), requestHandler(UsersController.signIn));
 };
