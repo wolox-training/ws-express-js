@@ -7,7 +7,7 @@ const {
 } = require('./middlewares/validators/users');
 
 const { postUsers: adminUsersPostSchema } = require('./middlewares/validators/admins');
-const { get: weetsGetSchema } = require('./middlewares/validators/weets');
+const { get: weetsGetSchema, postRateWeet } = require('./middlewares/validators/weets');
 const AuthenticationMiddleware = require('./middlewares/authentication');
 
 const UsersController = require('./controllers/users');
@@ -37,5 +37,11 @@ exports.init = app => {
     AuthenticationMiddleware,
     checkSchema(weetsGetSchema),
     requestHandler(WeetsController.getWeets)
+  );
+  app.post(
+    '/weets/:id(\\d+)/ratings',
+    AuthenticationMiddleware,
+    checkSchema(postRateWeet),
+    requestHandler(WeetsController.rateWeet)
   );
 };

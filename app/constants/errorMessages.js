@@ -17,6 +17,10 @@ module.exports = {
   admins: {
     OnlyForAdminsMessage: 'Only for admins'
   },
+  weets: {
+    weetAlreadyRatedMessage: 'Weet already rated',
+    weetDoNotExistsMessage: 'Weet do not exist'
+  },
   models: {
     NotValidName: 'Name cannot be null',
     CannotBeEmpty: 'Name cannot be empty',
