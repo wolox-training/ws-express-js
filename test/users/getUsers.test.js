@@ -6,7 +6,7 @@ const handleAsyncError = require('../testUtils');
 const { truncateDatabase, createUsers } = require('../setup');
 const errors = require('../../app/errors');
 const app = require('../../app');
-const initUsersData = require('../data/InitUsersData');
+const initUsersData = require('../data/initUsersData');
 
 beforeAll(async () => {
   await truncateDatabase();
