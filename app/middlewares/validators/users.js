@@ -3,7 +3,7 @@ const { users: errorMessages } = require('../../constants/errorMessages');
 const emailDefaultValidation = {
   isEmail: {
     bail: true,
-    errorMessage: 'Should be an email'
+    errorMessage: errorMessages.ShouldBeAnEmailMessage
   },
   matches: {
     options: /(\w|-|\.)+@(wolox)\.(\w|\.){2,15}$/i,
@@ -16,6 +16,18 @@ const passwordDefaultValidation = {
     errorMessage: errorMessages.PasswordMinLengthMessage,
     options: { min: 8 }
   }
+};
+
+const integerDefaultValidation = {
+  isInt: {
+    errorMessage: errorMessages.ShouldBeANumberGreaterThanZero,
+    options: [
+      {
+        min: 1
+      }
+    ]
+  },
+  toInt: true
 };
 
 const UsersSchemas = module.exports;
@@ -44,6 +56,23 @@ UsersSchemas.post = {
     optional: false,
     ...passwordDefaultValidation,
     errorMessage: errorMessages.NotValidEmailMessage
+  }
+};
+
+UsersSchemas.get = {
+  page: {
+    in: ['query'],
+    notEmpty: true,
+    optional: false,
+    ...integerDefaultValidation,
+    errorMessage: errorMessages.NotValidPageParamMessage
+  },
+  size: {
+    in: ['query'],
+    notEmpty: true,
+    optional: false,
+    ...integerDefaultValidation,
+    errorMessage: errorMessages.NotValidSizeParamMessage
   }
 };
 
