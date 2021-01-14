@@ -48,6 +48,13 @@ const config = {
     },
     externalServices: {
       geekJokesUrl: process.env.GEEK_JOKES_URL
+    },
+    nodemailer: {
+      service: process.env.MAIL_SERVICE,
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD
+      }
     }
   }
 };

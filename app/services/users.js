@@ -1,11 +1,20 @@
 const { user: UserModel, blacklist: BlacklistModel } = require('../models/index');
 const { notFoundError, unauthorizedError } = require('../errors');
 const HashUtils = require('../helpers/hashUtils');
+const MailUtils = require('../helpers/mailUtils');
 const { users: errorMessages } = require('../constants/errorMessages');
 
 const UsersServices = module.exports;
 
-UsersServices.createUser = userData => UserModel.create(userData);
+UsersServices.createUser = async userData => {
+  const { password } = userData;
+
+  const createdUser = await UserModel.create(userData);
+
+  MailUtils.sendMail(createdUser, password);
+
+  return createdUser;
+};
 
 UsersServices.signIn = async (email, password) => {
   const user = await UserModel.findOne({ where: { email } });
