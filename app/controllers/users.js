@@ -57,3 +57,15 @@ UsersController.getUsersList = async (req, res) => {
 
   return res.status(200).send(paginatedUsers);
 };
+
+UsersController.invalidateAllSessions = async (req, res) => {
+  const {
+    user: { id: userId }
+  } = req;
+
+  await UsersServices.invalidateAllSessions(userId);
+
+  logger.info('All sessions were invalidated');
+
+  return res.status(204).send();
+};
