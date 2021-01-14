@@ -16,5 +16,11 @@ module.exports = {
   },
   admins: {
     OnlyForAdminsMessage: 'Only for admins'
+  },
+  models: {
+    NotValidName: 'Name cannot be null',
+    CannotBeEmpty: 'Name cannot be empty',
+    EmailAlreadyInUseMessage: 'Email address already in use!',
+    PasswordMinMaxLengthMessage: 'Password length should be between 8 and 60'
   }
 };
