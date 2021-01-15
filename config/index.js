@@ -46,8 +46,15 @@ const config = {
       packageVersion: process.env.PACKAGE_VERSION || 'X-Package-Version',
       nodeVersion: process.env.NODE_VERSION || 'X-Node-Version'
     },
-    external_services: {
-      geek_jokes_url: process.env.GEEK_JOKES_URL
+    externalServices: {
+      geekJokesUrl: process.env.GEEK_JOKES_URL
+    },
+    nodemailer: {
+      service: process.env.MAIL_SERVICE,
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD
+      }
     }
   }
 };

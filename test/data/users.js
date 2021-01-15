@@ -8,5 +8,10 @@ module.exports = {
     password: 'thisIsAVerySecurePassword'
   },
   NotValidEmail: 'william@gmail.com',
-  ...errorMessages
+  ...errorMessages,
+  NotExistingEmail: 'notexist@wolox.co',
+  IncorrectPassword: 'thisIsAnIncorrectPassword',
+  NotANumber: 'definitelyNotANumber',
+  TooBigNumber: 99999999999999999,
+  MockedResponseFromSendMail: 'mail response'
 };

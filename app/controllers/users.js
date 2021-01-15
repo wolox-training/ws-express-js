@@ -39,3 +39,33 @@ UsersController.signIn = async (req, res) => {
 
   return res.status(200).send(signedUser);
 };
+
+UsersController.getUsersList = async (req, res) => {
+  const isValidRequest = validationResult(req).array();
+
+  if (isValidRequest.length) {
+    throw errors.badRequestError(isValidRequest[0].msg);
+  }
+
+  const {
+    query: { page, size }
+  } = req;
+
+  const paginatedUsers = await UsersServices.getUsersList(page, size);
+
+  logger.info('Users were listed successfully');
+
+  return res.status(200).send(paginatedUsers);
+};
+
+UsersController.invalidateAllSessions = async (req, res) => {
+  const {
+    user: { id: userId }
+  } = req;
+
+  await UsersServices.invalidateAllSessions(userId);
+
+  logger.info('All sessions were invalidated');
+
+  return res.status(204).send();
+};

@@ -1,13 +1,16 @@
 const request = require('supertest');
-const DataTest = require('./data/users');
-const handleAsyncError = require('./testUtils');
-const truncateDatabase = require('./setup');
-const app = require('../app');
+
+const MailUtils = require('../../app/helpers/mailUtils');
+const DataTest = require('../data/users');
+const handleAsyncError = require('../testUtils');
+const { truncateDatabase } = require('../setup');
+const app = require('../../app');
 
 const { newUserData } = DataTest;
 
 beforeAll(async () => {
   await truncateDatabase();
+  jest.spyOn(MailUtils, 'sendMail').mockImplementation(() => DataTest.MockedResponseFromSendMail);
 });
 
 describe('POST /users - Signup', () => {
@@ -204,7 +207,7 @@ describe('POST users/sessions', () => {
     } = response;
 
     expect(status).toBe(404);
-    expect(message).toBe(DataTest.NotFoundUserMessage);
+    expect(message).toBe(DataTest.UserNotFoundMessage);
     done();
   });
 

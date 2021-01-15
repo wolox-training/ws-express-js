@@ -16,6 +16,7 @@ exports.handle = (error, req, res, next) => {
   } else {
     // Unrecognized error, notifying it to rollbar.
     res.status(DEFAULT_STATUS_CODE);
+    error.internalCode = errors.DEFAULT_ERROR;
     next(error);
   }
 
