@@ -1,13 +1,9 @@
-const {
-  emailDefaultValidation,
-  passwordDefaultValidation,
-  defaultSchemaPagination
-} = require('./defaultValidations');
+const { emailDefaultValidation, passwordDefaultValidation } = require('./defaultValidations');
 const { users: errorMessages } = require('../../constants/errorMessages');
 
 const UsersSchemas = module.exports;
 
-UsersSchemas.post = {
+UsersSchemas.postUsers = {
   name: {
     in: ['body'],
     notEmpty: true,
@@ -31,26 +27,5 @@ UsersSchemas.post = {
     optional: false,
     ...passwordDefaultValidation,
     errorMessage: errorMessages.NotValidEmailMessage
-  }
-};
-
-UsersSchemas.get = {
-  ...defaultSchemaPagination
-};
-
-UsersSchemas.postSessions = {
-  email: {
-    in: ['body'],
-    notEmpty: true,
-    optional: false,
-    ...emailDefaultValidation,
-    errorMessage: errorMessages.NotValidEmailMessage
-  },
-  password: {
-    in: ['body'],
-    notEmpty: true,
-    optional: false,
-    ...passwordDefaultValidation,
-    errorMessage: errorMessages.NotValidPasswordMessage
   }
 };
