@@ -11,7 +11,7 @@ UsersServices.createUser = async userData => {
 
   const createdUser = await UserModel.create(userData);
 
-  MailUtils.sendMail(createdUser, password);
+  MailUtils.sendSignUpMail(createdUser, password);
 
   return createdUser;
 };

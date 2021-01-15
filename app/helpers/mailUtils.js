@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer');
 const logger = require('../../app/logger/index');
 
+const { congratulationsMail, signUpMail } = require('../constants/mailTemplates');
+
 const {
   common: {
     nodemailer: CREDENTIALS,
@@ -12,24 +14,7 @@ const {
 
 const MailUtils = module.exports;
 
-MailUtils.sendMail = async ({ email, name }, password = '******') => {
-  const message = {
-    from: SENDER,
-    to: email,
-    subject: 'ws-express sign-up',
-    html: `
-    <div style="margin: 0em 0em 8em 4em;">
-    <h1>Sign up successful</h1>
-    <p>Welcome ${name}</p>
-    <ul>
-    <li><strong>Name</strong>: ${name}</li>
-    <li><strong>Email</strong>:${email}</li>
-    <li><strong>Password</strong>:${password}</li>
-    </ul>
-    </div>
-    `
-  };
-
+MailUtils.sendMail = async message => {
   try {
     const transporter = nodemailer.createTransport(CREDENTIALS);
     const emailInfo = await transporter.sendMail(message);
@@ -42,4 +27,30 @@ MailUtils.sendMail = async ({ email, name }, password = '******') => {
     logger.error(error);
     return error;
   }
+};
+
+MailUtils.sendSignUpMail = ({ email, name }, password = '******') => {
+  const { subject, content } = signUpMail;
+
+  const message = {
+    from: SENDER,
+    to: email,
+    subject,
+    html: content(email, name, password)
+  };
+
+  return MailUtils.sendMail(message);
+};
+
+MailUtils.sendCongratulationMail = ({ email, name }) => {
+  const { subject, content } = congratulationsMail;
+
+  const message = {
+    from: SENDER,
+    to: email,
+    subject,
+    html: content(name)
+  };
+
+  return MailUtils.sendMail(message);
 };

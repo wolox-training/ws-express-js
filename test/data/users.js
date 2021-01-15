@@ -13,5 +13,6 @@ module.exports = {
   IncorrectPassword: 'thisIsAnIncorrectPassword',
   NotANumber: 'definitelyNotANumber',
   TooBigNumber: 99999999999999999,
-  MockedResponseFromSendMail: 'mail response'
+  MockedResponseFromSendMail: 'mail response',
+  MockedResponseScheduleTasks: 'scheduledTasks executed'
 };

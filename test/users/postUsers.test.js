@@ -1,6 +1,5 @@
 const request = require('supertest');
 
-const MailUtils = require('../../app/helpers/mailUtils');
 const DataTest = require('../data/users');
 const handleAsyncError = require('../testUtils');
 const { truncateDatabase } = require('../setup');
@@ -10,7 +9,6 @@ const { newUserData } = DataTest;
 
 beforeAll(async () => {
   await truncateDatabase();
-  jest.spyOn(MailUtils, 'sendMail').mockImplementation(() => DataTest.MockedResponseFromSendMail);
 });
 
 describe('POST /users - Signup', () => {

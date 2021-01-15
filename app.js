@@ -8,6 +8,7 @@ const errors = require('./app/middlewares/errors');
 const documentation = require('./documentation');
 const logger = require('./app/logger');
 const axiosConfig = require('./config/axios');
+const ScheduledTasks = require('./app/helpers/scheduledTasks');
 
 const DEFAULT_BODY_SIZE_LIMIT = 1024 * 1024 * 10;
 const DEFAULT_PARAMETER_LIMIT = 10000;
@@ -37,5 +38,7 @@ if (!config.isTesting) app.use(expressMiddleware({ loggerFn: logger.info }));
 routes.init(app);
 
 app.use(errors.handle);
+
+ScheduledTasks.start();
 
 module.exports = app;
