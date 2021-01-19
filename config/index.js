@@ -55,6 +55,18 @@ const config = {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASSWORD
       }
+    },
+    auth0: {
+      tokenUrl: process.env.AUTH0_TOKEN_URL,
+      audience: process.env.AUTH0_AUDIENCE,
+      jwksUri: process.env.AUTH0_JWKS_URI,
+      issuer: process.env.AUTH0_ISSUER,
+      credentials: {
+        client_id: process.env.AUTH0_CLIENT_ID,
+        client_secret: process.env.AUTH0_CLIENT_SECRET,
+        audience: process.env.AUTH0_AUDIENCE,
+        grant_type: process.env.AUTH0_GRANT_TYPE
+      }
     }
   }
 };

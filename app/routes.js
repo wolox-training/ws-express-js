@@ -1,4 +1,5 @@
 const { checkSchema } = require('express-validator');
+
 const { requestHandler } = require('./helpers/requestHandler');
 const {
   post: userPostSchema,
@@ -9,6 +10,8 @@ const {
 const { postUsers: adminUsersPostSchema } = require('./middlewares/validators/admins');
 const { get: weetsGetSchema, postRateWeet } = require('./middlewares/validators/weets');
 const AuthenticationMiddleware = require('./middlewares/authentication');
+const jwtCheck = require('./middlewares/auth0');
+const loadMetadata = require('./middlewares/loadMetadata');
 
 const UsersController = require('./controllers/users');
 const AdminsController = require('./controllers/admins');
@@ -20,11 +23,13 @@ exports.init = app => {
   app.post('/users', checkSchema(userPostSchema), requestHandler(UsersController.createUser));
   app.get(
     '/users',
-    AuthenticationMiddleware,
+    jwtCheck,
+    loadMetadata,
     checkSchema(userGetSchema),
     requestHandler(UsersController.getUsersList)
   );
   app.post('/users/sessions', checkSchema(userSessionsPostSchema), requestHandler(UsersController.signIn));
+  app.post('/login', checkSchema(userSessionsPostSchema), requestHandler(UsersController.login));
   app.post(
     '/users/sessions/invalidate_all',
     AuthenticationMiddleware,

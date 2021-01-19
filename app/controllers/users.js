@@ -69,3 +69,21 @@ UsersController.invalidateAllSessions = async (req, res) => {
 
   return res.status(204).send();
 };
+
+UsersController.login = async (req, res) => {
+  const isValidRequest = validationResult(req).array();
+
+  if (isValidRequest.length) {
+    throw errors.badRequestError(isValidRequest[0].msg);
+  }
+
+  const {
+    body: { email, password }
+  } = req;
+
+  const signedUser = await UsersServices.login(email, password);
+
+  logger.info('User signed successfully');
+
+  return res.status(200).send(signedUser);
+};

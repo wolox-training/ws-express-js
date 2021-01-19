@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('blacklists', {
@@ -19,7 +20,7 @@ module.exports = {
         }
       },
       token: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(1000)
       },
       is_disable: {
         type: Sequelize.BOOLEAN,
