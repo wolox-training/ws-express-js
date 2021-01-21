@@ -1,4 +1,4 @@
-const { user: UserModel } = require('../models/index');
+const { user: UserModel, blacklist: BlacklistModel } = require('../models/index');
 const { notFoundError, unauthorizedError } = require('../errors');
 const HashUtils = require('../helpers/hashUtils');
 const { users: errorMessages } = require('../constants/errorMessages');
@@ -10,7 +10,7 @@ UsersServices.createUser = userData => UserModel.create(userData);
 UsersServices.signIn = async (email, password) => {
   const user = await UserModel.findOne({ where: { email } });
 
-  if (!user) throw notFoundError(errorMessages.NotFoundUserMessage);
+  if (!user) throw notFoundError(errorMessages.UserNotFoundMessage);
 
   const { password: hashedPassword } = user;
 
@@ -20,5 +20,20 @@ UsersServices.signIn = async (email, password) => {
 
   const token = user.generateToken();
 
+  const { id: userId } = user;
+
+  await BlacklistModel.create({ userId, token });
+
   return { ...user.getPublicData(), token };
 };
+
+UsersServices.getUsersList = async (page, size) => {
+  const offset = (page - 1) * size;
+
+  const paginatedUsers = await UserModel.findAll({ limit: size, offset }).map(user => user.getPublicData());
+
+  return { users: paginatedUsers };
+};
+
+UsersServices.invalidateAllSessions = userId =>
+  BlacklistModel.update({ isDisable: true }, { where: { userId } });
