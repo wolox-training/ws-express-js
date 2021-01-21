@@ -5,6 +5,9 @@ const internalError = (message, internalCode) => ({
   internalCode
 });
 
+exports.FORBIDDEN_ERROR = 'forbidden_error';
+errors.forbiddenError = message => internalError(message, exports.FORBIDDEN_ERROR);
+
 exports.NOT_FOUND_ERROR = 'not_found_error';
 exports.notFoundError = message => internalError(message, exports.NOT_FOUND_ERROR);
 
@@ -21,6 +24,7 @@ exports.DEFAULT_ERROR = 'default_error';
 exports.defaultError = message => internalError(message, exports.DEFAULT_ERROR);
 
 exports.statusCodes = {
+  [exports.FORBIDDEN_ERROR]: 403,
   [exports.BAD_REQUEST_ERROR]: 400,
   [exports.NOT_FOUND_ERROR]: 404,
   [exports.UNAUTHORIZED_ERROR]: 401,
@@ -29,6 +33,7 @@ exports.statusCodes = {
 };
 
 exports.getErrorMessage = {
+  403: exports.forbiddenError,
   400: exports.badRequestError,
   404: exports.notFoundError,
   401: exports.unauthorizedError,
