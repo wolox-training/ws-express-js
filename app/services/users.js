@@ -10,7 +10,7 @@ UsersServices.createUser = userData => UserModel.create(userData);
 UsersServices.signIn = async (email, password) => {
   const user = await UserModel.findOne({ where: { email } });
 
-  if (!user) throw notFoundError(errorMessages.NotFoundUserMessage);
+  if (!user) throw notFoundError(errorMessages.UserNotFoundMessage);
 
   const { password: hashedPassword } = user;
 
@@ -21,4 +21,12 @@ UsersServices.signIn = async (email, password) => {
   const token = user.generateToken();
 
   return { ...user.getPublicData(), token };
+};
+
+UsersServices.getUsersList = async (page, size) => {
+  const offset = (page - 1) * size;
+
+  const paginatedUsers = await UserModel.findAll({ limit: size, offset }).map(user => user.getPublicData());
+
+  return { users: paginatedUsers };
 };
