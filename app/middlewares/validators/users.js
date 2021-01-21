@@ -1,22 +1,9 @@
+const {
+  emailDefaultValidation,
+  passwordDefaultValidation,
+  integerDefaultValidation
+} = require('./defaultValidations');
 const { users: errorMessages } = require('../../constants/errorMessages');
-
-const emailDefaultValidation = {
-  isEmail: {
-    bail: true,
-    errorMessage: 'Should be an email'
-  },
-  matches: {
-    options: /(\w|-|\.)+@(wolox)\.(\w|\.){2,15}$/i,
-    errorMessage: errorMessages.OnlyWoloxEmail
-  }
-};
-
-const passwordDefaultValidation = {
-  isLength: {
-    errorMessage: errorMessages.PasswordMinLengthMessage,
-    options: { min: 8 }
-  }
-};
 
 const UsersSchemas = module.exports;
 
@@ -44,6 +31,23 @@ UsersSchemas.post = {
     optional: false,
     ...passwordDefaultValidation,
     errorMessage: errorMessages.NotValidEmailMessage
+  }
+};
+
+UsersSchemas.get = {
+  page: {
+    in: ['query'],
+    notEmpty: true,
+    optional: false,
+    ...integerDefaultValidation,
+    errorMessage: errorMessages.NotValidPageParamMessage
+  },
+  size: {
+    in: ['query'],
+    notEmpty: true,
+    optional: false,
+    ...integerDefaultValidation,
+    errorMessage: errorMessages.NotValidSizeParamMessage
   }
 };
 
