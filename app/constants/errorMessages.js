@@ -7,7 +7,14 @@ module.exports = {
     EmailAlreadyInUseMessage: 'Email address already in use!',
     ShouldBeAnEmailMessage: 'Should be an email',
     OnlyWoloxEmail: 'You may only use email addresses from wolox',
-    NotFoundUserMessage: 'User not found',
-    IncorrectPasswordMessage: 'Incorrect password'
+    UserNotFoundMessage: 'User not found',
+    IncorrectPasswordMessage: 'Incorrect password',
+    ShouldBeANumberGreaterThanZero: 'Should be a number greater than 0',
+    NotValidPageParamMessage: 'Page should not be null or empty',
+    NotValidSizeParamMessage: 'size should not be null or empty',
+    UserUnauthorizedMessage: 'Unauthorized'
+  },
+  admins: {
+    OnlyForAdminsMessage: 'Only for admins'
   }
 };
